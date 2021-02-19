@@ -140,7 +140,7 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
 
             serviceCollection
                  .AddPolicies<IDummyService>(config, policyRegistry)
-                 .AddHttpClientBuilder<IDummyService, DummyService, DummyApiClientOptions>(config, policies)
+                 .AddHttpClient<IDummyService, DummyService, DummyApiClientOptions>(config, policies)
                  .AddHttpMessageHandler(() => httpMessageHandler);
 
             var provider = serviceCollection.BuildServiceProvider();

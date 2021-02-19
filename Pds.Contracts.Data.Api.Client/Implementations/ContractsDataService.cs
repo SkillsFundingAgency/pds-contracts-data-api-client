@@ -39,33 +39,31 @@ namespace Pds.Contracts.Data.Api.Client.Implementations
         }
 
         /// <inheritdoc/>
-        public async Task<Models.Contract> GetAsync(int id)
+        public async Task<Models.Contract> GetContractByIdAsync(int id)
         {
             _logger.LogInformation($"Retrieving a contract for id : {id}");
             return await Get<Models.Contract>($"/api/contract/{id}");
         }
 
         /// <inheritdoc/>
-        public async Task<Models.Contract> GetByContractNumberAndVersionAsync(string contractNumber, int version)
+        public async Task<Models.Contract> GetContractByContractNumberAndVersionAsync(string contractNumber, int version)
         {
             _logger.LogInformation($"Retrieving a contract for contract number : {contractNumber} and version : {version}");
             return await Get<Models.Contract>($"/api/contract?contractNumber={contractNumber}&versionNumber={version}");
         }
 
         /// <inheritdoc/>
-        public async Task<ContractReminderResponse<IEnumerable<ContractReminderItem>>> GetContractRemindersAsync(int reminderInterval, int pageNumber, int pageSize, ContractSortOptions sort, SortDirection order)
+        public async Task<ContractReminderResponse<IEnumerable<ContractReminderItem>>> GetContractRemindersAsync(uint reminderInterval, uint pageNumber, uint pageSize, ContractSortOptions sort, SortDirection order)
         {
             _logger.LogInformation($"Retrieving a contract reminders for reminderInterval : {reminderInterval}, pageNumber : {pageNumber}, pageSize : {pageSize}, sort : {sort} and order : {order}");
             return await Get<ContractReminderResponse<IEnumerable<ContractReminderItem>>>($"/api/contractReminders?reminderInterval={reminderInterval}&page={pageNumber}&count={pageSize}&sort={sort}&order={order}");
         }
 
         /// <inheritdoc/>
-        public Task UpdateContractReminderAsync(UpdateLastEmailReminderSentRequest request)
+        public async Task UpdateContractReminderAsync(UpdateLastEmailReminderSentRequest request)
         {
-            // This is not available yet.
-            // _logger.LogInformation($"Updating LastEmailReminderSent and LastUpdatedAt.")
-            // await Patch($"/api/contractReminder", request)
-            throw new NotImplementedException("Patching is not yet available through this SDK.");
+            _logger.LogInformation($"Updating LastEmailReminderSent and LastUpdatedAt.");
+            await Patch($"/api/contractReminder", request);
         }
 
         /// <inheritdoc/>

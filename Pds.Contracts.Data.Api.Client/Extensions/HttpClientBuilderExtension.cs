@@ -23,7 +23,7 @@ namespace Pds.Contracts.Data.Api.Client.Extensions
         /// </param>
         /// <param name="policies">A collection <see cref="PolicyType"/> to apply to the Http Client.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        public static IHttpClientBuilder AddHttpClientBuilder<TService, TImplementation, TClientOptions>(
+        public static IHttpClientBuilder AddHttpClient<TService, TImplementation, TClientOptions>(
                    this IServiceCollection services,
                    IConfiguration configuration,
                    IList<PolicyType> policies)

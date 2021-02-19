@@ -36,7 +36,7 @@ namespace Pds.Contracts.Data.Api.Client.Registrations
             // Configure Polly Policies for IContractsDataService HttpClient
             services
                 .AddPolicies<IContractsDataService>(configuration, policyRegistry)
-                .AddHttpClientBuilder<IContractsDataService, ContractsDataService, ContractsDataApiConfiguration>(configuration, policies);
+                .AddHttpClient<IContractsDataService, ContractsDataService, ContractsDataApiConfiguration>(configuration, policies);
 
             services.AddTransient(typeof(IAuthenticationService<>), typeof(AuthenticationService<>));
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();

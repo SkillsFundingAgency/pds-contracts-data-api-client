@@ -5,7 +5,6 @@ using Moq;
 using Pds.Contracts.Data.Api.Client.ConfigurationOptions;
 using Pds.Contracts.Data.Api.Client.Enumerations;
 using Pds.Contracts.Data.Api.Client.Implementations;
-using Pds.Contracts.Data.Api.Client.Interfaces;
 using Pds.Contracts.Data.Api.Client.Models;
 using Pds.Core.ApiClient.Exceptions;
 using Pds.Core.ApiClient.Interfaces;
@@ -26,6 +25,8 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
 
         private const string TestFakeAccessToken = "AccessToken";
 
+        #region ContractDataService Tests
+
         [TestMethod]
         public async Task GetAsync_MockHttp()
         {
@@ -43,7 +44,7 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
             int contractId = 1;
 
             //Act
-            var result = await contractsDataService.GetAsync(contractId);
+            var result = await contractsDataService.GetContractByIdAsync(contractId);
 
             // Assert
             result.Should().BeEquivalentTo(expectedContract);
@@ -70,7 +71,7 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
             ContractsDataService contractsDataService = CreateContractsDataService();
 
             //Act
-            var result = await contractsDataService.GetByContractNumberAndVersionAsync(contractNumber, version);
+            var result = await contractsDataService.GetContractByContractNumberAndVersionAsync(contractNumber, version);
 
             // Assert
             result.Should().BeEquivalentTo(expectedContract);
@@ -113,7 +114,7 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
             VerifyAllMocks();
         }
 
-        //[TestMethod] will be used in v2 once we have patch enabled in api client core.
+        [TestMethod]
         public void UpdateLastEmailReminderSentAndLastUpdatedAtAsync_MockHttp()
         {
             // Arrange
@@ -122,7 +123,8 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
             Mock.Get(_contractsDataLogger)
                 .Setup(p => p.LogInformation(It.IsAny<string>(), It.IsAny<object[]>()));
 
-            // _mockHttpMessageHandler.Expect(TestBaseAddress + $"/api/contractReminder").Respond(HttpStatusCode.OK)
+            _mockHttpMessageHandler.Expect(TestBaseAddress + $"/api/contractReminder").Respond(HttpStatusCode.OK);
+
             ContractsDataService contractsDataService = CreateContractsDataService();
 
             //Act
@@ -134,7 +136,7 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
             VerifyAllMocks();
         }
 
-        //[TestMethod] will be used in v2 once we have patch enabled in api client core.
+        [TestMethod]
         public void UpdateLastEmailReminderSentAndLastUpdatedAtAsync_Mock404Http()
         {
             // Arrange
@@ -146,7 +148,6 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
             Mock.Get(_contractsDataLogger)
                 .Setup(p => p.LogError(It.IsAny<Exception>(), It.IsAny<string>()));
 
-            // _mockHttpMessageHandler.Expect(TestBaseAddress + $"/api/contractReminder").Respond(HttpStatusCode.NotFound)
             ContractsDataService contractsDataService = CreateContractsDataService();
 
             //Act
@@ -157,6 +158,9 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
             _mockHttpMessageHandler.VerifyNoOutstandingExpectation();
             VerifyAllMocks();
         }
+
+        #endregion ContractDataService Tests
+
 
         #region Setup Helpers
 
@@ -191,6 +195,7 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
             };
 
         #endregion Setup Helpers
+
 
         #region Verify Helpers
 
