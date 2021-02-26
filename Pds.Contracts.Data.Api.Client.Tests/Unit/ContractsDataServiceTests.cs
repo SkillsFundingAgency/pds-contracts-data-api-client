@@ -106,7 +106,7 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
             ContractsDataService contractsDataService = CreateContractsDataService();
 
             //Act
-            var result = await contractsDataService.GetContractRemindersAsync(reminderInterval, pageNumber, pageSize, sort, order);
+            var result = await contractsDataService.GetContractRemindersAsync((uint)reminderInterval, (uint)pageNumber, (uint)pageSize, sort, order);
 
             // Assert
             result.Should().BeEquivalentTo(expectedContractReminders);
