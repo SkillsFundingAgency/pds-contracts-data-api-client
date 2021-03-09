@@ -10,10 +10,10 @@
 		Package providing a HTTP client service for the Contracts Data Api.
 		Usage: Add a call to services.AddContractsDataApiClient(), provide an action for hydrating the configuration as an instance of ContractsDataApiConfiguration and the policy registry.
 		</Description>
-		<Version>1.0.0</Version>
 		<PackageReleaseNotes>Created Pds.Contracts.Data.Api.Client package.</PackageReleaseNotes>
 		<PackageProjectUrl></PackageProjectUrl>
 		<RepositoryUrl>https://sfa-gov-uk.visualstudio.com/Provider%20Digital%20Services/_git/pds-packages</RepositoryUrl>
+    <Version>0.1.1</Version>
 	</PropertyGroup>
 
 	<ItemGroup>

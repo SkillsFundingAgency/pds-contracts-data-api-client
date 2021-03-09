@@ -35,30 +35,35 @@ namespace Pds.Contracts.Data.Api.Client.Interfaces
         /// - if there are internal server exceptions.
         /// - if the client cannot be authenticated.
         /// </exception>
-        Task<Contract> GetContractByContractNumberAndVersionAsync(string contractNumber, int version);
+        Task<Contract> GetContractAsync(string contractNumber, int version);
 
         /// <summary>
         /// Gets contract reminders.
         /// </summary>
         /// <param name="reminderInterval">Interval in days.</param>
-        /// <param name="pageNumber">The page number to return.</param>
-        /// <param name="pageSize">The number of records in the page.</param>
+        /// <param name="page">The page number to return.</param>
+        /// <param name="count">The number of records in the page.</param>
         /// <param name="sort">Sort parameters to apply.</param>
         /// <param name="order">The order in which to .</param>
-        /// <returns>Returns a list of contract reminder response <see cref="ContractReminderResponse{IEnumerable{ContractReminderItem}}"/>.</returns>
+        /// <returns>Returns a list of contract reminder response <see cref="ContractReminders"/>.</returns>
         /// <exception cref="Pds.Core.ApiClient.Exceptions.ApiGeneralException">
         /// An ApiGeneralException will be thrown
         /// - if there are any invalid inputs.
         /// - if there are internal server exceptions.
         /// - if the client cannot be authenticated.
         /// </exception>
-        Task<ContractReminderResponse<IEnumerable<ContractReminderItem>>> GetContractRemindersAsync(uint reminderInterval, uint pageNumber, uint pageSize, ContractSortOptions sort, SortDirection order);
+        Task<ContractReminders> GetContractRemindersAsync(
+            uint reminderInterval = 14,
+            uint page = 1,
+            uint count = 10,
+            ContractSortOptions sort = ContractSortOptions.LastUpdatedAt,
+            SortDirection order = SortDirection.Asc);
 
         /// <summary>
         /// Updates the contract as reminded by id, contract number and version number combination.
         /// </summary>
-        /// <param name="request">
-        /// An <see cref="UpdateLastEmailReminderSentRequest"/> model with id, contract number and contract version to be used for reminder update.
+        /// <param name="contractReminderItem">
+        /// An <see cref="ContractReminderItem"/> model with id, contract number and contract version to be used for reminder update.
         /// </param>
         /// <returns>Returns async task completion.</returns>
         /// <exception cref="Core.ApiClient.Exceptions.ApiGeneralException">
@@ -68,6 +73,6 @@ namespace Pds.Contracts.Data.Api.Client.Interfaces
         /// - if there are internal server exceptions.
         /// - if the client cannot be authenticated.
         /// </exception>
-        Task UpdateContractReminderAsync(UpdateLastEmailReminderSentRequest request);
+        Task UpdateContractReminderAsync(ContractReminderItem contractReminderItem);
     }
 }

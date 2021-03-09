@@ -8,7 +8,6 @@ using Pds.Core.ApiClient.Exceptions;
 using Pds.Core.ApiClient.Interfaces;
 using Pds.Core.Logging;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -42,28 +41,38 @@ namespace Pds.Contracts.Data.Api.Client.Implementations
         public async Task<Models.Contract> GetContractByIdAsync(int id)
         {
             _logger.LogInformation($"Retrieving a contract for id : {id}");
-            return await Get<Models.Contract>($"/api/contract/{id}");
+            return await Get<Contract>($"/api/contract/{id}");
         }
 
         /// <inheritdoc/>
-        public async Task<Models.Contract> GetContractByContractNumberAndVersionAsync(string contractNumber, int version)
+        public async Task<Models.Contract> GetContractAsync(string contractNumber, int version)
         {
             _logger.LogInformation($"Retrieving a contract for contract number : {contractNumber} and version : {version}");
-            return await Get<Models.Contract>($"/api/contract?contractNumber={contractNumber}&versionNumber={version}");
+            return await Get<Contract>($"/api/contract?contractNumber={contractNumber}&versionNumber={version}");
         }
 
         /// <inheritdoc/>
-        public async Task<ContractReminderResponse<IEnumerable<ContractReminderItem>>> GetContractRemindersAsync(uint reminderInterval, uint pageNumber, uint pageSize, ContractSortOptions sort, SortDirection order)
+        public async Task<ContractReminders> GetContractRemindersAsync(
+            uint reminderInterval = 14,
+            uint page = 1,
+            uint count = 10,
+            ContractSortOptions sort = ContractSortOptions.LastUpdatedAt,
+            SortDirection order = SortDirection.Asc)
         {
-            _logger.LogInformation($"Retrieving a contract reminders for reminderInterval : {reminderInterval}, pageNumber : {pageNumber}, pageSize : {pageSize}, sort : {sort} and order : {order}");
-            return await Get<ContractReminderResponse<IEnumerable<ContractReminderItem>>>($"/api/contractReminders?reminderInterval={reminderInterval}&page={pageNumber}&count={pageSize}&sort={sort}&order={order}");
+            _logger.LogInformation($"Retrieving a contract reminders for reminderInterval : {reminderInterval}, pageNumber : {page}, pageSize : {count}, sort : {sort} and order : {order}");
+            return await Get<ContractReminders>($"/api/contractReminders?reminderInterval={reminderInterval}&page={page}&count={count}&sort={sort}&order={order}");
         }
 
         /// <inheritdoc/>
-        public async Task UpdateContractReminderAsync(UpdateLastEmailReminderSentRequest request)
+        public async Task UpdateContractReminderAsync(ContractReminderItem contractReminderItem)
         {
             _logger.LogInformation($"Updating LastEmailReminderSent and LastUpdatedAt.");
-            await Patch($"/api/contractReminder", request);
+            await Patch($"/api/contractReminder", new ContractIdentifier
+            {
+                Id = contractReminderItem.Id,
+                ContractNumber = contractReminderItem.ContractNumber,
+                ContractVersion = contractReminderItem.ContractVersion
+            });
         }
 
         /// <inheritdoc/>

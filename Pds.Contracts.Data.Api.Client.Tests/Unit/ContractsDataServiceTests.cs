@@ -71,7 +71,7 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
             ContractsDataService contractsDataService = CreateContractsDataService();
 
             //Act
-            var result = await contractsDataService.GetContractByContractNumberAndVersionAsync(contractNumber, version);
+            var result = await contractsDataService.GetContractAsync(contractNumber, version);
 
             // Assert
             result.Should().BeEquivalentTo(expectedContract);
@@ -96,8 +96,8 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
                 new ContractReminderItem() { Id = 1, ContractVersion = 1, ContractNumber = "Test1" },
                 new ContractReminderItem() { Id = 2, ContractVersion = 1, ContractNumber = "Test2" }
             };
-            ContractReminderResponse<List<ContractReminderItem>> expectedContractReminders = new ContractReminderResponse<List<ContractReminderItem>>(contractList);
-            expectedContractReminders.Paging = new Metadata() { CurrentPage = pageNumber, PageSize = pageSize, TotalCount = 2, TotalPages = 1, HasNextPage = false, HasPreviousPage = false, NextPageUrl = string.Empty, PreviousPageUrl = string.Empty };
+            var expectedContractReminders = new ContractReminders { Contracts = contractList };
+            expectedContractReminders.Paging = new Paging() { CurrentPage = pageNumber, PageSize = pageSize, TotalCount = 2, TotalPages = 1, HasNextPage = false, HasPreviousPage = false, NextPageUrl = string.Empty, PreviousPageUrl = string.Empty };
 
             string jsonString = JsonSerializer.Serialize(expectedContractReminders);
 
@@ -118,7 +118,7 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
         public void UpdateLastEmailReminderSentAndLastUpdatedAtAsync_MockHttp()
         {
             // Arrange
-            UpdateLastEmailReminderSentRequest request = new UpdateLastEmailReminderSentRequest() { Id = 1, ContractVersion = 1, ContractNumber = "Test1" };
+            var request = new ContractReminderItem { Id = 1, ContractVersion = 1, ContractNumber = "Test1" };
 
             Mock.Get(_contractsDataLogger)
                 .Setup(p => p.LogInformation(It.IsAny<string>(), It.IsAny<object[]>()));
@@ -140,7 +140,7 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
         public void UpdateLastEmailReminderSentAndLastUpdatedAtAsync_Mock404Http()
         {
             // Arrange
-            UpdateLastEmailReminderSentRequest request = new UpdateLastEmailReminderSentRequest() { Id = 1, ContractVersion = 1, ContractNumber = "Test1" };
+            var request = new ContractReminderItem { Id = 1, ContractVersion = 1, ContractNumber = "Test1" };
 
             Mock.Get(_contractsDataLogger)
                 .Setup(p => p.LogInformation(It.IsAny<string>(), It.IsAny<object[]>()));

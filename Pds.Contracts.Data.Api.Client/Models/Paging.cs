@@ -3,7 +3,7 @@
     /// <summary>
     /// Metadata.
     /// </summary>
-    public class Metadata
+    public class Paging
     {
         /// <summary>
         /// Gets or sets totalCount.
