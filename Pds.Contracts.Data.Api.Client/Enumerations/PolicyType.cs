@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Pds.Contracts.Data.Api.Client.Enumerations
+﻿namespace Pds.Contracts.Data.Api.Client.Enumerations
 {
     /// <summary>
     /// Http transient fault handing policy.
