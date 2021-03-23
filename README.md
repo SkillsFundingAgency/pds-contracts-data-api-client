@@ -2,19 +2,19 @@
 
 ## Introduction
 
-This is a client package used for contracts data API to provide a consistent and simpler access to contracts data API. This package abstracts HttpClient calls and responses and provides a c# typed response for consumption.
+This is a client package used for contracts data API to provide consistent and simpler access to contracts data API. This package abstracts HttpClient calls and responses and provides a c# typed response for consumption.
 More information about contracts data API including details about API reference can be found at <https://github.com/SkillsFundingAgency/pds-contracts-data-api>  
 
 ### Getting Started
 
-This is a Visual Studio 2019 project containing the implementation to abstract calls to Contracts data API.
+This is a Visual Studio 2019 project containing the implementation of abstract calls to Contracts data API.
 To use this package clone the project and open the solution in Visual Studio 2019 to build and package locally.
 
 ### Dependencies
 
-This pakcage has the following dependencies.
+This package has the following dependencies.
 
-#### Depended by (decendends depends on this package)
+#### Depended by (descendants depends on this package)
 
 * None
 
@@ -25,8 +25,8 @@ This pakcage has the following dependencies.
 
 ## Usage example
 
-To use this contracts api client sdk in your application after installation add `AddContractsDataApiClient` during startup to services collection as below.
-It requires polly registry for transient fault tolerance.
+To use this contracts API client SDK in your application after installation, add `AddContractsDataApiClient` during startup to services collection as below.
+It requires a Polly registry for transient fault tolerance.
 
 ```c#
     public class Startup
@@ -47,7 +47,7 @@ It requires polly registry for transient fault tolerance.
     }
 ```
 
-Once added to services collection then constructor injection can be used to access an implementation instance of `IDataContractService` to access contract api. See example below.
+Once added to services collection then constructor injection can be used to access an implementation instance of `IDataContractService` to access contract API. See the example below.
 
 ```c#
     public class ContractsDataServiceExample
@@ -69,7 +69,7 @@ Once added to services collection then constructor injection can be used to acce
 
 ## Build and Test
 
-This packages is built using
+This package is built using
 
 * Microsoft Visual Studio 2019
 * .Net Core 3.1
@@ -80,5 +80,5 @@ To build and test locally, you can either use visual studio 2019 or VSCode or si
 
 To contribute,
 
-* If you are part of the team then create a branch for changes and then then submit your changes for review by creating a pull request.
+* If you are part of the team then create a branch for changes and then submit your changes for review by creating a pull request.
 * If you are external to the organisation then fork this repository and make necessary changes and then submit your changes for review by creating a pull request.
