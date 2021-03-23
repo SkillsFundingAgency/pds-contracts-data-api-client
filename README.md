@@ -2,12 +2,12 @@
 
 ## Introduction
 
-This is a client package used for contracts data API to provide a consistent and simpler access to contracs data API. This package abstracts HttpClient calls and responses and provides a c# typed response for consumption.
+This is a client package used for contracts data API to provide a consistent and simpler access to contracts data API. This package abstracts HttpClient calls and responses and provides a c# typed response for consumption.
 More information about contracts data API including details about API reference can be found at <https://github.com/SkillsFundingAgency/pds-contracts-data-api>  
 
 ### Getting Started
 
-This is a Visual Studio 2019 project containing implementation to abstract calls to Contracts data API.
+This is a Visual Studio 2019 project containing the implementation to abstract calls to Contracts data API.
 To use this package clone the project and open the solution in Visual Studio 2019 to build and package locally.
 
 ### Dependencies
@@ -26,7 +26,7 @@ This pakcage has the following dependencies.
 ## Usage example
 
 To use this contracts api client sdk in your application after installation add `AddContractsDataApiClient` during startup to services collection as below.
-It requires polly registry for transient fault tollerance.
+It requires polly registry for transient fault tolerance.
 
 ```c#
     public class Startup
@@ -69,12 +69,12 @@ Once added to services collection then constructor injection can be used to acce
 
 ## Build and Test
 
-This packages are is built using
+This packages is built using
 
 * Microsoft Visual Studio 2019
 * .Net Core 3.1
 
-To build and test locally, you can either use visual studio 2019 or VSCode or simply use dotnet CLI `dotnet build` and `dotnet test` more information in dotnet CLI can be found at <https://docs.microsoft.com/en-us/dotnet/core/tools/>.
+To build and test locally, you can either use visual studio 2019 or VSCode or simply use dotnet CLI `dotnet build` and `dotnet test` more information on dotnet CLI can be found at <https://docs.microsoft.com/en-us/dotnet/core/tools/>.
 
 ## Contribute
 

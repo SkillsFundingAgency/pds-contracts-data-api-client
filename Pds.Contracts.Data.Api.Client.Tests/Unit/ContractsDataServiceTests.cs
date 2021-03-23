@@ -13,6 +13,7 @@ using RichardSzalay.MockHttp;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -24,6 +25,74 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
         private const string TestBaseAddress = "http://test-api-endpoint";
 
         private const string TestFakeAccessToken = "AccessToken";
+
+        [TestMethod]
+        public async Task CreateContractAsyncTest()
+        {
+            // Arrange
+            Mock.Get(_contractsDataLogger)
+                .Setup(p => p.LogInformation(It.IsAny<string>(), It.IsAny<object[]>()));
+            var expectedContractRequest = new CreateRequest { ContractNumber = "Test" };
+            _mockHttpMessageHandler
+                .Expect(HttpMethod.Post, TestBaseAddress + $"/api/contract")
+                .With(m =>
+                {
+                    var input = m.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    var createContractRequest = JsonSerializer.Deserialize<CreateRequest>(input);
+                    createContractRequest.Should().BeEquivalentTo(expectedContractRequest);
+                    return true;
+                })
+                .Respond(HttpStatusCode.OK);
+            ContractsDataService contractsDataService = CreateContractsDataService();
+
+            //Act
+            await contractsDataService.CreateContractAsync(expectedContractRequest);
+
+            // Assert
+            _mockHttpMessageHandler.VerifyNoOutstandingExpectation();
+            VerifyAllMocks();
+        }
+
+        [TestMethod]
+        public async Task ManualApproveAsyncTest()
+        {
+            // Arrange
+            Mock.Get(_contractsDataLogger)
+                .Setup(p => p.LogInformation(It.IsAny<string>(), It.IsAny<object[]>()));
+
+            var expectedContractRequest = new ApprovalRequest { ContractNumber = "Test", ContractVersion = 1, FileName = "sample-blob-file.xml", Id = 1 };
+
+            _mockHttpMessageHandler
+                .Expect(HttpMethod.Post, TestBaseAddress + $"/api/manualApprove")
+                .With(m =>
+                {
+                    var input = m.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    var createContractRequest = JsonSerializer.Deserialize<CreateRequest>(input);
+                    createContractRequest.Should().BeEquivalentTo(expectedContractRequest);
+                    return true;
+                })
+                .Respond(HttpStatusCode.OK);
+            ContractsDataService contractsDataService = CreateContractsDataService();
+
+            //Act
+            await contractsDataService.ManualApproveAsync(expectedContractRequest);
+
+            // Assert
+            _mockHttpMessageHandler.VerifyNoOutstandingExpectation();
+            VerifyAllMocks();
+        }
+
+        [TestMethod]
+        public void ConfirmApprovalAsyncTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void WithdrawAsyncTest()
+        {
+            Assert.Fail();
+        }
 
         #region ContractDataService Tests
 
