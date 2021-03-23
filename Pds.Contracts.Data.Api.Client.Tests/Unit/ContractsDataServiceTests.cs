@@ -13,6 +13,7 @@ using RichardSzalay.MockHttp;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -157,6 +158,54 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
             act.Should().Throw<ApiGeneralException>().Where(e => e.ResponseStatusCode == HttpStatusCode.NotFound);
             _mockHttpMessageHandler.VerifyNoOutstandingExpectation();
             VerifyAllMocks();
+        }
+
+        [TestMethod]
+        public async Task CreateContractAsyncTestAsync()
+        {
+            // Arrange
+            Mock.Get(_contractsDataLogger)
+                .Setup(p => p.LogInformation(It.IsAny<string>(), It.IsAny<object[]>()));
+
+            var expectedContractRequest = new CreateRequest { ContractNumber = "Test" };
+
+            _mockHttpMessageHandler
+                .Expect(HttpMethod.Post, TestBaseAddress + $"/api/contract")
+                .With(m =>
+                {
+                    var input = m.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    var createContractRequest = JsonSerializer.Deserialize<CreateRequest>(input);
+                    createContractRequest.Should().BeEquivalentTo(expectedContractRequest);
+                    return true;
+                })
+                .Respond(HttpStatusCode.OK);
+
+            ContractsDataService contractsDataService = CreateContractsDataService();
+
+            //Act
+            await contractsDataService.CreateContractAsync(expectedContractRequest);
+
+            // Assert
+            _mockHttpMessageHandler.VerifyNoOutstandingExpectation();
+            VerifyAllMocks();
+        }
+
+        [TestMethod]
+        public void ManualApproveAsyncTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void ConfirmApprovalAsyncTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void WithdrawAsyncTest()
+        {
+            Assert.Fail();
         }
 
         #endregion ContractDataService Tests
