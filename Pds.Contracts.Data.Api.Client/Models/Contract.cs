@@ -51,7 +51,6 @@ namespace Pds.Contracts.Data.Api.Client.Models
         /// </value>
         public string ParentContractNumber { get; set; }
 
-
         /// <summary>
         /// Gets or sets the contract version.
         /// </summary>
@@ -68,7 +67,6 @@ namespace Pds.Contracts.Data.Api.Client.Models
         /// The value.
         /// </value>
         public decimal Value { get; set; }
-
 
         /// <summary>
         /// Gets or sets the status.

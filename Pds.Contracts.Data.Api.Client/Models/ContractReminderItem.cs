@@ -13,6 +13,8 @@ namespace Pds.Contracts.Data.Api.Client.Models
         /// Gets or sets the identifier.
         /// </summary>
         /// <value>The identifier.</value>
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Please enter a value greater than zero.")]
         public int Id { get; set; }
 
         /// <summary>
@@ -34,6 +36,7 @@ namespace Pds.Contracts.Data.Api.Client.Models
         /// </summary>
         /// <value>The contract number.</value>
         [Required]
+        [StringLength(20, MinimumLength = 1)]
         public string ContractNumber { get; set; }
 
         /// <summary>
@@ -41,6 +44,7 @@ namespace Pds.Contracts.Data.Api.Client.Models
         /// </summary>
         /// <value>The contract version.</value>
         [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Please enter a value greater than zero.")]
         public int ContractVersion { get; set; }
 
         /// <summary>
