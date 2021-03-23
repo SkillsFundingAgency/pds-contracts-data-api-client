@@ -13,7 +13,7 @@
 		<PackageReleaseNotes>Created Pds.Contracts.Data.Api.Client package.</PackageReleaseNotes>
 		<PackageProjectUrl></PackageProjectUrl>
 		<RepositoryUrl>https://sfa-gov-uk.visualstudio.com/Provider%20Digital%20Services/_git/pds-packages</RepositoryUrl>
-    <Version>0.1.1</Version>
+    <Version>0.1.2</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
