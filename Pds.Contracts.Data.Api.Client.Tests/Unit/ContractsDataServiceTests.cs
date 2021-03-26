@@ -308,7 +308,7 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
             var expectedContractRequest = new ApprovalRequest { ContractNumber = "Test", ContractVersion = 1, FileName = "sample-blob-file.xml", Id = 1 };
             ContractsDataService contractsDataService = CreateContractsDataService();
 
-            SetUpHttpMessageHandler(expectedContractRequest, httpStatusCode, $"/api/confirmApproval", HttpMethod.Patch);
+            SetUpHttpMessageHandler(expectedContractRequest, httpStatusCode, $"/api/contract/confirmApproval", HttpMethod.Patch);
 
             //Act
             Func<Task> action = async () => await contractsDataService.ConfirmApprovalAsync(expectedContractRequest);
@@ -378,7 +378,7 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
 
             ContractsDataService contractsDataService = CreateContractsDataService();
 
-            SetUpHttpMessageHandler(expectedContractRequest, httpStatusCode, $"/api/withdraw", HttpMethod.Patch);
+            SetUpHttpMessageHandler(expectedContractRequest, httpStatusCode, $"/api/contract/withdraw", HttpMethod.Patch);
 
             //Act
             Func<Task> action = async () => await contractsDataService.WithdrawAsync(expectedContractRequest);

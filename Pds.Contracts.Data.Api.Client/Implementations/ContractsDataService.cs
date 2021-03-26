@@ -127,7 +127,7 @@ namespace Pds.Contracts.Data.Api.Client.Implementations
             _logger.LogInformation($"Confirm approval endpoint called for [{approvalRequest.ContractNumber}] version [{approvalRequest.ContractVersion}].");
             try
             {
-                await Patch($"/api/confirmApproval", approvalRequest);
+                await Patch($"/api/contract/confirmApproval", approvalRequest);
             }
             catch (ApiGeneralException ex)
             {
@@ -149,7 +149,7 @@ namespace Pds.Contracts.Data.Api.Client.Implementations
             _logger.LogInformation($"Withdraw endpoint called for [{withdrawalRequest.ContractNumber}] version [{withdrawalRequest.ContractVersion}] with type [{withdrawalRequest.WithdrawalType}].");
             try
             {
-                await Patch($"/api/withdraw", withdrawalRequest);
+                await Patch($"/api/contract/withdraw", withdrawalRequest);
             }
             catch (ApiGeneralException ex)
             {
