@@ -47,6 +47,19 @@ namespace Pds.Contracts.Data.Api.Client.Implementations
         }
 
         /// <inheritdoc/>
+        public async Task<Models.Contract> TryGetContractAsync(string contractNumber, int version)
+        {
+            try
+            {
+                return await GetContractAsync(contractNumber, version);
+            }
+            catch (ContractNotFoundClientException)
+            {
+                return null;
+            }
+        }
+
+        /// <inheritdoc/>
         public async Task<Models.Contract> GetContractAsync(string contractNumber, int version)
         {
             _logger.LogInformation($"Retrieving a contract for contract number : {contractNumber} and version : {version}");
@@ -127,7 +140,7 @@ namespace Pds.Contracts.Data.Api.Client.Implementations
             _logger.LogInformation($"Confirm approval endpoint called for [{approvalRequest.ContractNumber}] version [{approvalRequest.ContractVersion}].");
             try
             {
-                await Patch($"/api/confirmApproval", approvalRequest);
+                await Patch($"/api/contract/confirmApproval", approvalRequest);
             }
             catch (ApiGeneralException ex)
             {
@@ -149,7 +162,7 @@ namespace Pds.Contracts.Data.Api.Client.Implementations
             _logger.LogInformation($"Withdraw endpoint called for [{withdrawalRequest.ContractNumber}] version [{withdrawalRequest.ContractVersion}] with type [{withdrawalRequest.WithdrawalType}].");
             try
             {
-                await Patch($"/api/withdraw", withdrawalRequest);
+                await Patch($"/api/contract/withdraw", withdrawalRequest);
             }
             catch (ApiGeneralException ex)
             {
