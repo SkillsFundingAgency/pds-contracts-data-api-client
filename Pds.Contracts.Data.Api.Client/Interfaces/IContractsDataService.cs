@@ -24,6 +24,22 @@ namespace Pds.Contracts.Data.Api.Client.Interfaces
         Task<Contract> GetContractByIdAsync(int id);
 
         /// <summary>
+        /// Tries to get the contract by contract number and version number if one available.
+        /// </summary>
+        /// <param name="contractNumber">The contract number.</param>
+        /// <param name="version">The version number of contract.</param>
+        /// <returns>
+        /// Null if there are no contract for contract number, version combination.
+        /// An instance of <see cref="Models.Contract"/> corresponding to the contract number and version number, if one exists.
+        /// </returns>
+        /// <exception cref="Core.ApiClient.Exceptions.ApiGeneralException">
+        /// An ApiGeneralException will be thrown
+        /// - if there are internal server exceptions.
+        /// - if the client cannot be authenticated.
+        /// </exception>
+        Task<Contract> TryGetContractAsync(string contractNumber, int version);
+
+        /// <summary>
         /// Gets the contract by contract number and version number.
         /// </summary>
         /// <param name="contractNumber">The contract number.</param>

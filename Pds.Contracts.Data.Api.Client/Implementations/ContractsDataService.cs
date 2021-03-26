@@ -47,6 +47,19 @@ namespace Pds.Contracts.Data.Api.Client.Implementations
         }
 
         /// <inheritdoc/>
+        public async Task<Models.Contract> TryGetContractAsync(string contractNumber, int version)
+        {
+            try
+            {
+                return await GetContractAsync(contractNumber, version);
+            }
+            catch (ContractNotFoundClientException)
+            {
+                return null;
+            }
+        }
+
+        /// <inheritdoc/>
         public async Task<Models.Contract> GetContractAsync(string contractNumber, int version)
         {
             _logger.LogInformation($"Retrieving a contract for contract number : {contractNumber} and version : {version}");
