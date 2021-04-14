@@ -17,6 +17,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Pds.Contracts.Data.Api.Client.Tests.Unit
 {
@@ -109,7 +110,7 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
         }
 
         [TestMethod]
-        public async Task GetByContractNumberAndVersionAsync_MockHttp()
+        public async Task TryGetContractAsyncTestAsync()
         {
             // Arrange
             string contractNumber = "Test";
@@ -123,6 +124,58 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
             string jsonString = JsonSerializer.Serialize(expectedContract);
 
             _mockHttpMessageHandler.Expect(TestBaseAddress + $"/api/contract?contractNumber={contractNumber}&versionNumber={version}").Respond("application/json", jsonString);
+
+            ContractsDataService contractsDataService = CreateContractsDataService();
+
+            //Act
+            var result = await contractsDataService.TryGetContractAsync(contractNumber, version);
+
+            // Assert
+            result.Should().BeEquivalentTo(expectedContract);
+            _mockHttpMessageHandler.VerifyNoOutstandingExpectation();
+            VerifyAllMocks();
+        }
+
+        [TestMethod]
+        public async Task TryGetContractAsync_ShoulNotThrowNotFoundException_TestAsync()
+        {
+            // Arrange
+            string contractNumber = "Test";
+            int version = 1;
+
+            Mock.Get(_contractsDataLogger)
+                .Setup(p => p.LogInformation(It.IsAny<string>(), It.IsAny<object[]>()));
+
+            Mock.Get(_contractsDataLogger)
+                .Setup(p => p.LogError(It.IsAny<Exception>(), It.IsAny<string>(), It.IsAny<object[]>()));
+
+            ContractsDataService contractsDataService = CreateContractsDataService();
+            _mockHttpMessageHandler.Expect(TestBaseAddress + $"/api/contract?contractNumber={contractNumber}&versionNumber={version}").Respond(HttpStatusCode.NotFound);
+
+            //Act
+            var result = await contractsDataService.TryGetContractAsync(contractNumber, version);
+
+            // Assert
+            result.Should().BeNull();
+            _mockHttpMessageHandler.VerifyNoOutstandingExpectation();
+            VerifyAllMocks();
+        }
+
+        [DataTestMethod]
+        [DataRow("test", 1)]
+        [DataRow("test+24", 1)]
+        [DataRow("test!£$%^&*()-_=+{}@#~?><./\\\"¬`24", 0)]
+        public async Task GetByContractNumberAndVersionAsync_MockHttp(string contractNumber, int version)
+        {
+            // Arrange
+            Mock.Get(_contractsDataLogger)
+                .Setup(p => p.LogInformation(It.IsAny<string>(), It.IsAny<object[]>()));
+
+            var expectedContract = new Contract() { Id = 1, ContractVersion = 1, ContractNumber = "Test1" };
+
+            string jsonString = JsonSerializer.Serialize(expectedContract);
+
+            _mockHttpMessageHandler.Expect(TestBaseAddress + $"/api/contract?contractNumber={HttpUtility.UrlEncode(contractNumber)}&versionNumber={version}").Respond("application/json", jsonString);
 
             ContractsDataService contractsDataService = CreateContractsDataService();
 
