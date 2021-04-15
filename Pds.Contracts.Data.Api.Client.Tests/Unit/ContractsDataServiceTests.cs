@@ -17,6 +17,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Pds.Contracts.Data.Api.Client.Tests.Unit
 {
@@ -108,13 +109,13 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
             VerifyAllMocks();
         }
 
-        [TestMethod]
-        public async Task GetByContractNumberAndVersionAsync_MockHttp()
+        [DataTestMethod]
+        [DataRow("test", 1)]
+        [DataRow("test+24", 1)]
+        [DataRow("test!£$%^&*()-_=+{}@#~?><./\\\"¬`24", 0)]
+        public async Task GetByContractNumberAndVersionAsync_MockHttp(string contractNumber, int version)
         {
             // Arrange
-            string contractNumber = "Test";
-            int version = 1;
-
             Mock.Get(_contractsDataLogger)
                 .Setup(p => p.LogInformation(It.IsAny<string>(), It.IsAny<object[]>()));
 
@@ -122,7 +123,7 @@ namespace Pds.Contracts.Data.Api.Client.Tests.Unit
 
             string jsonString = JsonSerializer.Serialize(expectedContract);
 
-            _mockHttpMessageHandler.Expect(TestBaseAddress + $"/api/contract?contractNumber={contractNumber}&versionNumber={version}").Respond("application/json", jsonString);
+            _mockHttpMessageHandler.Expect(TestBaseAddress + $"/api/contract?contractNumber={HttpUtility.UrlEncode(contractNumber)}&versionNumber={version}").Respond("application/json", jsonString);
 
             ContractsDataService contractsDataService = CreateContractsDataService();
 

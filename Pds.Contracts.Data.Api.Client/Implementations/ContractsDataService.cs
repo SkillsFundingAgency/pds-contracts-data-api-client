@@ -12,6 +12,7 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Pds.Contracts.Data.Api.Client.Implementations
 {
@@ -63,7 +64,7 @@ namespace Pds.Contracts.Data.Api.Client.Implementations
         public async Task<Models.Contract> GetContractAsync(string contractNumber, int version)
         {
             _logger.LogInformation($"Retrieving a contract for contract number : {contractNumber} and version : {version}");
-            return await Get<Contract>($"/api/contract?contractNumber={contractNumber}&versionNumber={version}");
+            return await Get<Contract>($"/api/contract?contractNumber={HttpUtility.UrlEncode(contractNumber)}&versionNumber={version}");
         }
 
         /// <inheritdoc/>
