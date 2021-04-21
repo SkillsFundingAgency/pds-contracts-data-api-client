@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <IsPackable>false</IsPackable>
+	  <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+	  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
+	  <PackageReference Include="MSTest.TestAdapter" Version="2.1.2" />
+	  <PackageReference Include="MSTest.TestFramework" Version="2.1.2" />
+	  <PackageReference Include="coverlet.collector" Version="1.2.0" />
+	  <PackageReference Include="FluentAssertions" Version="5.10.3" />
+	  <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
+	  <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="4.2.1" />
+	  <PackageReference Include="Moq" Version="4.16.0" />
+	  <PackageReference Include="Pds.Core.CodeAnalysis.StyleCop" Version="2.0.0" />
+	  <PackageReference Include="RichardSzalay.MockHttp" Version="6.0.0" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Pds.Contracts.Data.Api.Client\Pds.Contracts.Data.Api.Client.csproj" />
+	</ItemGroup>
+</Project>

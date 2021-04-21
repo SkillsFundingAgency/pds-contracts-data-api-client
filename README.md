@@ -1,20 +1,84 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Manage your education and skills funding - Pds.Contracts.Data.Api.Client
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+## Introduction
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+This is a client package used for contracts data API to provide consistent and simpler access to contracts data API. This package abstracts HttpClient calls and responses and provides a c# typed response for consumption.
+More information about contracts data API including details about API reference can be found at <https://github.com/SkillsFundingAgency/pds-contracts-data-api>  
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+### Getting Started
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+This is a Visual Studio 2019 project containing the implementation of abstract calls to Contracts data API.
+To use this package clone the project and open the solution in Visual Studio 2019 to build and package locally.
+
+### Dependencies
+
+This package has the following dependencies.
+
+#### Depended by (descendants depends on this package)
+
+* None
+
+#### Depends on (this package depends on the following)
+
+* [Pds.Core.ApiClient](https://dev.azure.com/sfa-gov-uk/Provider%20Digital%20Services/_git/pds-packages?path=%2FPds.Core.ApiClient)
+* [Pds.Core.CodeAnalysis.StyleCop](https://dev.azure.com/sfa-gov-uk/Provider%20Digital%20Services/_git/pds-packages?path=%2FPds.Core.CodeAnalysis.StyleCop)
+
+## Usage example
+
+To use this contracts API client SDK in your application after installation, add `AddContractsDataApiClient` during startup to services collection as below.
+It requires a Polly registry for transient fault tolerance.
+
+```c#
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            // Add polly registry and pass that on to the data contracts api client.
+            var policyRegistry = services.AddPolicyRegistry();
+            services.AddContractsDataApiClient(Configuration, policyRegistry);
+        }
+    }
+```
+
+Once added to services collection then constructor injection can be used to access an implementation instance of `IDataContractService` to access contract API. See the example below.
+
+```c#
+    public class ContractsDataServiceExample
+    {
+        private readonly IContractsDataService _contractsDataClient;
+
+        public ContractsDataServiceExample(IContractsDataService contractsDataClient)
+        {
+            _contractsDataClient = contractsDataClient;
+        }
+
+        public async Task AnExampleCall()
+        {
+            var result = await _contractsDataClient.GetContractByContractNumberAndVersionAsync(contractNumber:"Test-1234", version:1);
+            return result;
+        }
+    }
+```
+
+## Build and Test
+
+This package is built using
+
+* Microsoft Visual Studio 2019
+* .Net Core 3.1
+
+To build and test locally, you can either use visual studio 2019 or VSCode or simply use dotnet CLI `dotnet build` and `dotnet test` more information on dotnet CLI can be found at <https://docs.microsoft.com/en-us/dotnet/core/tools/>.
+
+## Contribute
+
+To contribute,
+
+* If you are part of the team then create a branch for changes and then submit your changes for review by creating a pull request.
+* If you are external to the organisation then fork this repository and make necessary changes and then submit your changes for review by creating a pull request.
